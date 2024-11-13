@@ -15,8 +15,7 @@
 		"paths": "./out/paths.json"
 	},
 	"scripts": {
-		"build": "tsup",
-		"release": "npm run build && npm version patch && git push --tags"
+		"build": "tsup"
 	},
 	"devDependencies": {
 		"@mota.alyson/presets": "^1.1.0",
