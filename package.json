@@ -1,5 +1,5 @@
 {
-	"name": "@vite-plugin/resolve-tsconfig-paths",
+	"name": "vite-plugin-resolve-tsconfig-paths",
 	"version": "0.0.1",
 	"type": "module",
 	"author": "alysonmota",
