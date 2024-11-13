@@ -2,6 +2,12 @@
 	"name": "@vite-plugin/resolve-tsconfig-paths",
 	"version": "0.0.1",
 	"type": "module",
+	"author": "alysonmota",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alysonmota/vite-plugin-resolve-tsconfig-paths.git"
+	},
+	"homepage": "https://github.com/alysonmota/vite-plugin-resolve-tsconfig-paths",
 	"types": "out/index.d.ts",
 	"module": "index.js",
 	"main": "out/index.cjs",
