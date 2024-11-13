@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-resolve-tsconfig-paths",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"type": "module",
 	"author": "alysonmota",
 	"repository": {
@@ -30,7 +30,9 @@
 	"dependencies": {
 		"fast-glob": "^3.3.2"
 	},
-	"files": ["out"],
+	"files": [
+		"out"
+	],
 	"private": false,
 	"publishConfig": {
 		"access": "public"
