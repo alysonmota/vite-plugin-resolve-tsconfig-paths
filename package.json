@@ -8,11 +8,15 @@
 		"url": "git+https://github.com/alysonmota/vite-plugin-resolve-tsconfig-paths.git"
 	},
 	"homepage": "https://github.com/alysonmota/vite-plugin-resolve-tsconfig-paths",
-	"types": "out/index.d.ts",
-	"module": "out/index.js",
-	"main": "out/index.js",
+	"types": "./out/index.d.ts",
+	"module": "./out/index.js",
+	"main": "./out/index.js",
 	"exports": {
-		"paths": "./out/paths.json"
+		"default": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js",
+			"require": "./out/index.js"
+		}
 	},
 	"scripts": {
 		"build": "tsup"

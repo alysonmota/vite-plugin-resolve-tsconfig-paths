@@ -156,7 +156,7 @@ function resolveTsConfigPaths({ generatePathsFromViteConfig = false }: ResolveTs
 						const aliasIsFile = /^.*\.*$/g.test(alias)
 						paths[aliasIsFile ? find : find.concat('/*')] = [aliasIsFile ? alias : alias.endsWith('/') ? alias.concat('*') : alias.concat('/*')]
 					}
-					writeFileSync('./paths.json', JSON.stringify({ compilerOptions: { baseUrl: root, paths } }))
+					writeFileSync(resolve(root, 'node_modules/vite-plugin-resolve-tsconfig-paths/generated'), JSON.stringify({ compilerOptions: { baseUrl: root, paths } }))
 				}
 			}
 
