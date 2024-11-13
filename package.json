@@ -16,8 +16,7 @@
 	},
 	"scripts": {
 		"build": "tsup",
-		"release": "npm version patch && git push --tags",
-		"prepublishOnly": "npm run build"
+		"release": "npm run build && npm version patch && git push --tags"
 	},
 	"devDependencies": {
 		"@mota.alyson/presets": "^1.1.0",
