@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"lib": ["esnext", "dom"],
+		"target": "esnext",
+		"module": "esnext",
+		"moduleDetection": "force",
+		"jsx": "react-jsx",
+		"allowJs": true,
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		"strict": true,
+		"noUnusedLocals": false
+	}
+}
