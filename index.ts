@@ -24,6 +24,8 @@ type TsConfig = {
 	extends?: Array<string>
 }
 
+const configDirRegex = /\$\{configDir\}/g
+
 function resolveTsConfigPath(tsConfigPath: string): TsConfig | undefined {
 	const _tsconfigPath = resolve(tsConfigPath)
 	const tsconfigExists = existsSync(resolve(_tsconfigPath))
@@ -85,38 +87,34 @@ function getRecursivePathsFromTsConfig(root: string, tsConfigPath: string): Arra
 
 const tsAliasSuffix = '/*'
 
-function tryExtractFindPatternFromTsAlias(tsAlias: string): string | undefined {
+function removeSuffixPatternFromTsAlias(tsAlias: string) {
 	if (tsAlias.endsWith(tsAliasSuffix)) return tsAlias.slice(0, -tsAliasSuffix.length)
-	return undefined
+	return tsAlias
 }
 
-const configDirRegex = /\$\{configDir\}/g
+function resolveMaps(baseUrl: string, maps: Array<string>) {
+	for (let m = 0; m < maps.length; m++) {
+		const mapWithoutSuffixPattern = removeSuffixPatternFromTsAlias(maps[m])
+		maps[m] = mapWithoutSuffixPattern === '*' ? resolve(baseUrl) : resolve(baseUrl, mapWithoutSuffixPattern.replace(configDirRegex, String()))
+	}
+
+	return maps
+}
 
 function resolveAliases(root: string, aliases: Array<UnresolvedAlias>): Array<ResolvedAlias> {
 	const resolvedAliases = new Array<ResolvedAlias>()
 
 	for (const { baseUrl, paths } of aliases) {
 		for (const [pattern, remaps] of Object.entries(paths)) {
-			const [remapWithGreaterPriority] = remaps
-			const remapWithGreaterPriorityWithoutAliasSuffix = tryExtractFindPatternFromTsAlias(remapWithGreaterPriority)
-			if (!remapWithGreaterPriorityWithoutAliasSuffix) continue
-			const findPattern = tryExtractFindPatternFromTsAlias(pattern)
-			if (!findPattern) continue
-			const _baseUrl = baseUrl === '.' ? root : baseUrl
-			if (_baseUrl) {
-				const baseUrlHasConfigDir = _baseUrl.includes('${configDir}')
-				resolvedAliases.push({
-					find: findPattern,
-					replacement: baseUrlHasConfigDir
-						? resolve(join(_baseUrl.replace(configDirRegex, root), remapWithGreaterPriorityWithoutAliasSuffix.replace(configDirRegex, String())))
-						: resolve(join(_baseUrl.replace(configDirRegex, root), remapWithGreaterPriorityWithoutAliasSuffix.replace(configDirRegex, root))),
-				})
-				continue
-			}
+			const patternWithoutSuffix = removeSuffixPatternFromTsAlias(pattern)
+			if (!patternWithoutSuffix) continue
 
+			const _baseUrl = (baseUrl === '.' ? root : baseUrl?.startsWith('${configDir}') ? baseUrl.replace(configDirRegex, root) : baseUrl) ?? root
+			const [map] = resolveMaps(_baseUrl, remaps).filter(existsSync) ?? []
+			if (!map) continue
 			resolvedAliases.push({
-				find: findPattern,
-				replacement: resolve(join(root, remapWithGreaterPriorityWithoutAliasSuffix.replace(configDirRegex, String()))),
+				find: patternWithoutSuffix,
+				replacement: map,
 			})
 		}
 	}
@@ -128,7 +126,7 @@ function resolveTsConfigAliases(): PluginOption {
 	let resolvedAliases: Array<ResolvedAlias>
 
 	return {
-		name: '@vite-plugin/resolve-tsconfig-paths',
+		name: 'vite-plugin-resolve-tsconfig-paths',
 		enforce: 'pre',
 		async resolveId(source) {
 			for (const { find, replacement } of resolvedAliases) {
@@ -158,4 +156,5 @@ function resolveTsConfigAliases(): PluginOption {
 	}
 }
 
-export { getRecursivePathsFromTsConfig, resolveAliases, resolveTsConfigAliases }
+export { resolveTsConfigPath, resolveAliases, getRecursivePathsFromTsConfig }
+export { resolveTsConfigAliases }

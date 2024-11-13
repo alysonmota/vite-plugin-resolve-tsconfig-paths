@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-resolve-tsconfig-paths",
-	"version": "0.0.1",
+	"version": "0.0.4",
 	"type": "module",
 	"author": "alysonmota",
 	"repository": {
@@ -13,12 +13,12 @@
 	"main": "out/index.cjs",
 	"exports": {
 		"import": {
-			"default": "./out/index.js",
-			"types": "./out/index.d.ts"
+			"types": "./out/index.d.ts",
+			"default": "./out/index.js"
 		},
 		"require": {
-			"default": "./out/index.cjs",
-			"types": "./out/index.d.cts"
+			"types": "./out/index.d.cts",
+			"default": "./out/index.cjs"
 		}
 	},
 	"scripts": {
