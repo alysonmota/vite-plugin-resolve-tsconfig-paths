@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-resolve-tsconfig-paths",
-	"version": "0.0.5",
+	"version": "0.0.7",
 	"type": "module",
 	"author": "alysonmota",
 	"repository": {
@@ -12,13 +12,12 @@
 	"module": "out/index.js",
 	"main": "out/index.js",
 	"exports": {
-		".": {
-			"types": "./out/index.d.ts",
-			"default": "./out/index.js"
-		}
+		"paths": "./out/paths.json"
 	},
 	"scripts": {
-		"build": "tsup"
+		"build": "tsup",
+		"release": "npm version patch && git push --tags",
+		"prepublishOnly": "npm run build"
 	},
 	"devDependencies": {
 		"@mota.alyson/presets": "^1.1.0",
@@ -33,5 +32,7 @@
 	},
 	"files": ["out"],
 	"private": false,
-	"publishConfig": { "access": "public" }
+	"publishConfig": {
+		"access": "public"
+	}
 }
